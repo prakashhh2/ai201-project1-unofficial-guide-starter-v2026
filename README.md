@@ -63,56 +63,55 @@ so duplicating text across chunks would add noise.
 
      Milestone 3. -->
 
-**Chunk 1** — source: `dining_kestrel_commons.txt#0` — produced by: `chunker.py::split_documents`
+**Chunk 1** — source: `admin_add_drop_deadline.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
-Kestrel Commons
+On the add/drop deadline
 
-I'm a junior and I've done this twice now. Wait times: 20 to 25 minutes between 12:15 and 1:00, under 5 minutes before 11:45. The thing worth going for is the stir-fry station, made to order. The thing to know is that the salad bar wilts after 1:30.
-
-Hours are 7:00am to 9:00pm weekdays, 9:00am to 8:00pm weekends. Costs one meal swipe, or $12.50 cash.
-```
-
-**Chunk 2** — source: `admin_pass_fail_option.txt#0` — produced by: `chunker.py::split_documents`
+You can add a course through the end of the second week. Dropping is a longer window — through the end of week six — but a drop after week two shows as a W on your transcript. Nothing anywhere on the registrar's site says this plainly, and students find out from each other.
 
 ```
-On the pass/fail option
 
-Any course outside your major can be taken pass/fail, and — the part nobody mentions — you can declare it as late as week eight, after you've seen your midterm. A pass needs a C- or better. Two per year, maximum eight across a degree.
-```
-
-**Chunk 3** — source: `housing_aldridge_hall.txt#0` — produced by: `chunker.py::split_documents`
+**Chunk 2** — source: `course_biol_160_exams.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
-Aldridge Hall — what it's actually like
+BIOL 160 Cell Biology — assessment
 
-I lived here my sophomore year. Built 1968, renovated 2019. Rooms are doubles with a shared bathroom per floor.
+Four unit tests and a cumulative final. Not curved.
 
-The good: closest building to the science quad, four minutes to a 9am lab.
-
-The bad: the elevator is out roughly one week per semester.
-
-Laundry costs $1.75 wash, $1.50 dry, card only. On noise: quiet floors on 3 and 4 are genuinely enforced.
+The unit tests come fast, roughly every three weeks; falling behind once is very hard to recover from.
 ```
 
-**Chunk 4** — source: `transit_shuttle.txt#0` — produced by: `chunker.py::split_documents`
+**Chunk 3** — source: `course_math_220_exams.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
-The campus shuttle
+MATH 220 Linear Algebra — assessment
 
-Runs a loop every 20 minutes from 7am to 11pm on weekdays and every 40 minutes on weekends. The published timetable is optimistic by about five minutes in the morning and accurate the rest of the day.
+Two midterms and a cumulative final. Curved to a b- median.
 
-It's free with a student ID. The stop outside Fenwick Court is the one that gets skipped when the driver is behind, which is worth knowing if you live there.
+The problem sets are the course; the lectures make sense afterwards rather than during.
 ```
 
-**Chunk 5** — source: `course_cs_210_workload.txt#0` — produced by: `chunker.py::split_documents`
+**Chunk 4** — source: `dining_the_ridgeway_cafe.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
-Workload for CS 210 Data Structures
+The Ridgeway Café
 
-People keep asking so: 8 to 10 hours a week outside class. That's real time, not optimistic time.
+Second-year here. Wait times: 10 to 15 minutes at 12:30, none after 2:00. The thing worth going for is the only place on campus with real espresso. The thing to know is that seating is tight; about 40 seats for a building of 900.
 
-It's front-loaded — the first month is heavier than the rest, partly because you're learning the format.
+Hours are 7:00am to 4:00pm weekdays only. Costs declining balance only, no meal swipes.
+```
+
+**Chunk 5** — source: `housing_morrow_house.txt#0` — produced by: `chunker.py::split_documents`
+
+```
+Morrow House — what it's actually like
+
+Just finished a year in this building. Built 1954, partially renovated 2008. Rooms are singles and doubles, hall bathrooms.
+
+The good: cheapest housing tier by about $900 a year, and the singles are real singles.
+
+The bad: known damp problem on the ground floor; two rooms were taken offline in 2024.
 ```
 
 ## Sample Answer
