@@ -23,11 +23,13 @@
 
 ## What This Does
 
-<!-- Three or four sentences. Which corpus you picked, and the kinds of
-     questions your system answers. Write it for someone who has never seen
-     this repo.
-
-     Milestone 5. -->
+This project is a retrieval-augmented question-answering system for the
+`campus_life` corpus, which contains short student-written posts and campus
+administrative documents. It retrieves relevant chunks about topics such as
+dining, housing, courses, transit, and university policies. A relevance gate
+refuses questions that are not supported by the corpus, and the grounded
+answer prompt requires the response to use only retrieved documents and name
+the source file.
 
 ## Chunking Strategy
 
@@ -175,9 +177,19 @@ filename.
 
      Milestone 5. -->
 
-**1.**
+**1.** I asked an AI assistant to pressure-test whether my test questions had
+specific, checkable answers and to identify the exact phrase each answer
+should contain. It helped identify direct facts such as the Kestrel Commons
+wait time and the CS 210 workload; I checked each phrase against the source
+documents and removed the spring-tide question because it belonged to the
+`city_guides` corpus rather than my selected `campus_life` corpus.
 
-**2.**
+**2.** I asked an AI assistant to help choose a chunking strategy for the
+short campus posts and interpret the retrieval distances. It suggested
+paragraph-aware chunks, and my measurements produced 91 chunks averaging 306
+characters; I implemented the 450-character, zero-overlap strategy, kept
+`TOP_K = 5`, and set the cutoff at `0.6` after comparing the in-scope and
+out-of-scope distance groups.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
