@@ -121,10 +121,15 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 
 **Question:**
 
+How often does the campus shuttle run on weekdays, and how often does it run
+on weekends?
+
 **Answer:**
 
-```
-```
+According to `transit_shuttle.txt`, the campus shuttle runs every 20 minutes on
+weekdays and every 40 minutes on weekends. It is free with a student ID.
+
+**Source:** `transit_shuttle.txt`
 
 **My relevance cutoff:**
 
@@ -139,7 +144,25 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| How long are the wait times at Kestrel Commons between 12:15 and 1:00, and before 11:45? | Yes | 0.2331 |
+| What are the rules for taking a course pass/fail outside my major? | Yes | 0.3004 |
+| How much do washing and drying cost in Aldridge Hall, and when is the best time to do laundry? | Yes | 0.1854 |
+| How often does the campus shuttle run on weekdays, and how often does it run on weekends? | Yes | 0.4748 |
+| How many hours per week should I expect to spend outside class for CS 210, and when is the workload heaviest? | Yes | 0.1769 |
+| What is the capital of Mongolia? | No | 0.8246 |
+| How do I change the oil in a diesel engine? | No | 0.9340 |
+| Who won the 1994 World Cup? | No | 0.8859 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.8442 |
+| How do I write a for loop in Rust? | No | 0.8960 |
+
+I chose a cutoff of **0.6** because the best in-scope distance was 0.4748 and
+the closest out-of-scope distance was 0.8246, leaving a clear gap between the
+two groups. With `TOP_K = 5`, the three questions I inspected retrieved
+on-topic chunks near the top; the shuttle question's first result contained
+both weekday and weekend frequencies. I reviewed `GROUNDING_INSTRUCTION` in
+`generate.py` and kept it unchanged because it already requires document-only
+answers, refusal when the documents do not cover the question, and the source
+filename.
 
 ## How I Used AI
 

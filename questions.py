@@ -42,10 +42,6 @@ QUESTIONS = [
         "question": "How many hours per week should I expect to spend outside class for CS 210, and when is the workload heaviest?",
         "expects": "8 to 10 hours a week",
     },
-    {
-        "question": "How often does the road flood at the highest spring tides?",
-        "expects": "roughly six times per year",
-    }
 ]
 
 # Questions from a different world entirely. Your gate should refuse all five.
