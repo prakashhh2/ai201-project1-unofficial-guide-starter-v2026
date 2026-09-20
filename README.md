@@ -1,6 +1,8 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+<!-- Replace this line with your name. -->
+
+**Corpus:** `campus_life`
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -29,8 +31,16 @@
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** 450 characters
+**Overlap:** 0 characters
+
+The starter's 800-character windows produced 88 chunks for 88 documents,
+because nearly every campus-life post was shorter than 800 characters. I kept
+each post's paragraph structure and packed adjacent paragraphs up to 450
+characters. This keeps the short factual posts together while preventing a
+longer multi-topic post from becoming one oversized retrieval result. I used
+no overlap because the useful facts are normally complete within a paragraph,
+so duplicating text across chunks would add noise.
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
@@ -53,29 +63,56 @@
 
      Milestone 3. -->
 
-**Chunk 1** — source: `` — produced by: ``
+**Chunk 1** — source: `dining_kestrel_commons.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
+Kestrel Commons
+
+I'm a junior and I've done this twice now. Wait times: 20 to 25 minutes between 12:15 and 1:00, under 5 minutes before 11:45. The thing worth going for is the stir-fry station, made to order. The thing to know is that the salad bar wilts after 1:30.
+
+Hours are 7:00am to 9:00pm weekdays, 9:00am to 8:00pm weekends. Costs one meal swipe, or $12.50 cash.
 ```
 
-**Chunk 2** — source: `` — produced by: ``
+**Chunk 2** — source: `admin_pass_fail_option.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
+On the pass/fail option
+
+Any course outside your major can be taken pass/fail, and — the part nobody mentions — you can declare it as late as week eight, after you've seen your midterm. A pass needs a C- or better. Two per year, maximum eight across a degree.
 ```
 
-**Chunk 3** — source: `` — produced by: ``
+**Chunk 3** — source: `housing_aldridge_hall.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
+Aldridge Hall — what it's actually like
+
+I lived here my sophomore year. Built 1968, renovated 2019. Rooms are doubles with a shared bathroom per floor.
+
+The good: closest building to the science quad, four minutes to a 9am lab.
+
+The bad: the elevator is out roughly one week per semester.
+
+Laundry costs $1.75 wash, $1.50 dry, card only. On noise: quiet floors on 3 and 4 are genuinely enforced.
 ```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 4** — source: `transit_shuttle.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
+The campus shuttle
+
+Runs a loop every 20 minutes from 7am to 11pm on weekdays and every 40 minutes on weekends. The published timetable is optimistic by about five minutes in the morning and accurate the rest of the day.
+
+It's free with a student ID. The stop outside Fenwick Court is the one that gets skipped when the driver is behind, which is worth knowing if you live there.
 ```
 
-**Chunk 5** — source: `` — produced by: ``
+**Chunk 5** — source: `course_cs_210_workload.txt#0` — produced by: `chunker.py::split_documents`
 
 ```
+Workload for CS 210 Data Structures
+
+People keep asking so: 8 to 10 hours a week outside class. That's real time, not optimistic time.
+
+It's front-loaded — the first month is heavier than the rest, partly because you're learning the format.
 ```
 
 ## Sample Answer

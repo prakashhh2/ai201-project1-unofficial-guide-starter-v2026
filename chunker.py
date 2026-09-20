@@ -23,6 +23,7 @@ your pipeline, not giving up.
 """
 
 from dataclasses import dataclass
+import re
 
 import config
 from ingest import Document
@@ -97,7 +98,70 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
       - Would splitting on paragraph breaks keep more thoughts intact than
         splitting on a character count?
     """
-    return fallback_split(documents)
+    limit = config.CHUNK_SIZE
+    if limit <= 0:
+        raise ValueError("CHUNK_SIZE has to be positive")
+
+    chunks: list[Chunk] = []
+
+    for doc in documents:
+        paragraphs = [part.strip() for part in doc.text.split("\n\n") if part.strip()]
+        current: list[str] = []
+        current_length = 0
+        index = 0
+
+        def flush() -> None:
+            nonlocal current, current_length, index
+            if not current:
+                return
+            chunks.append(
+                Chunk(
+                    text="\n\n".join(current),
+                    source=doc.source,
+                    index=index,
+                    produced_by="chunker.py::split_documents",
+                )
+            )
+            index += 1
+            current = []
+            current_length = 0
+
+        for paragraph in paragraphs:
+            if len(paragraph) > limit:
+                flush()
+                # This is only a safeguard for an unusually long paragraph;
+                # the selected campus_life documents are shorter than this.
+                sentences = re.split(r"(?<=[.!?])\s+", paragraph)
+                piece = ""
+                for sentence in sentences:
+                    candidate = f"{piece} {sentence}".strip()
+                    if piece and len(candidate) > limit:
+                        chunks.append(
+                            Chunk(
+                                text=piece,
+                                source=doc.source,
+                                index=index,
+                                produced_by="chunker.py::split_documents",
+                            )
+                        )
+                        index += 1
+                        piece = sentence
+                    else:
+                        piece = candidate
+                if piece:
+                    current = [piece]
+                    current_length = len(piece)
+                continue
+
+            added_length = len(paragraph) + (2 if current else 0)
+            if current and current_length + added_length > limit:
+                flush()
+            current.append(paragraph)
+            current_length += len(paragraph) + (2 if len(current) > 1 else 0)
+
+        flush()
+
+    return chunks
 
 
 def describe(chunks: list[Chunk]) -> str:
