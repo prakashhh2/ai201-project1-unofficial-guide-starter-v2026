@@ -367,23 +367,21 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 
 ## Diagnoses
 
-<!-- For each miss: which stage caused it, and how. The stage alone isn't
-     enough — you need the mechanism.
+I missed nothing in the before run, so there is no failed question from which
+to identify a loading, chunking, embedding, retrieval, or generation failure.
+All five answer-bearing chunks were retrieved in every run, all 15 answers
+named a source, the gate refused all five out-of-corpus questions, and the
+five sampled chunks were complete thoughts. Because every stage produced the
+expected observable result, this run does not support a diagnosis of a faulty
+pipeline stage or a failure pattern.
 
-     Not a diagnosis: "Question 3 didn't work."
-     A diagnosis:     "Question 3 asks about laundry costs. The answer is in
-                       one sentence that got split across two chunks, so
-                       neither chunk on its own contains it."
-
-     The five stages: loading → chunking → embedding → retrieval → generation.
-
-     Look for a pattern. If three misses all ask about numbers, that's one
-     problem, not three.
-
-     Missed nothing? Say so, then say honestly whether your targets were set
-     low, and which one you'd tighten and to what.
-
-     Milestone 3. -->
+The targets were conservative rather than strong: criteria 1, 3, 4, and 5
+allowed one failure even though the corpus uses short, focused source
+documents, and the observed result was 5/5 for each. For the next evaluation,
+I would tighten criterion 1 to **5 of 5**: each test question has a direct
+answer in a focused document, and retrieval found that answer-bearing chunk
+for all five questions in all three runs. This is a proposed stricter future
+target, not a revision of the original criterion.
 
 ## The Improvement
 
