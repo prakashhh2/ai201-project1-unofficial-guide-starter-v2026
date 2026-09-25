@@ -191,6 +191,14 @@ characters; I implemented the 450-character, zero-overlap strategy, kept
 `TOP_K = 5`, and set the cutoff at `0.6` after comparing the in-scope and
 out-of-scope distance groups.
 
+**3.** In this unit, I asked an AI assistant to identify one retrieval-stage
+improvement connected to the possible weakness in exact names and numbers. It
+suggested hybrid BM25 plus semantic search; I implemented that in
+`store.py::search`. The smoke test caught that my first version no longer
+returned results nearest-first, so I restored that interface contract before
+running the after test. The after results stayed at 5/5, so I reported that the
+change preserved the ceiling rather than claiming it improved the system.
+
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
      claims earns nothing.
@@ -426,17 +434,18 @@ measurement ceiling.
 
 ## What's Still Broken
 
-<!-- For each criterion still missed after your fix: what you'd do about it,
-     and why you stopped where you did.
-
-     "I ran out of time" is fine if it's true. Pretending nothing is left is
-     not.
-
-     Milestone 5. -->
+No acceptance criterion is still missed after the fix: all five are 5/5 in
+the before and after runs, and the gate refused all five out-of-corpus
+questions. There is therefore no criterion-specific pipeline failure left to
+fix. The remaining limitation is that this test set is already at its ceiling,
+so it cannot show whether hybrid search helps on harder questions; I stopped
+after the one requested change and its full measurement instead of making
+additional unmeasured changes.
 
 ## What I'd Do Differently
 
-<!-- Knowing what you know now — which of your five criteria would you write
-     differently, and why?
-
-     Milestone 5. -->
+I would write criterion 1 as **5 of 5** instead of 4 of 5 in the next unit.
+Each question has a direct answer in a focused document, and the original
+system retrieved all five answer-bearing chunks in every run. The 4/5 target
+was useful as a baseline, but it was too forgiving for this corpus and made a
+perfect result less informative than it should have been.
