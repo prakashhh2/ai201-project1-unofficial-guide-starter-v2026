@@ -18,6 +18,7 @@ rest of the project if they were wrong:
 """
 
 import os
+import re
 import shutil
 from dataclasses import dataclass
 
@@ -28,6 +29,7 @@ from dataclasses import dataclass
 os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
 
 import chromadb  # noqa: E402
+from rank_bm25 import BM25Okapi  # noqa: E402
 
 import config
 from chunker import Chunk
@@ -185,9 +187,13 @@ def search(
     variant: str = "default",
 ) -> list[Result]:
     """
-    Retrieve the chunks closest in meaning to a question.
+    Retrieve chunks with a hybrid semantic-plus-keyword search.
 
-    Returns them nearest-first, each with its distance.
+    Chroma supplies semantic distances for every chunk. BM25 then boosts chunks
+    sharing exact words with the question, which helps with names and numbers
+    that an embedding can treat as broadly similar. The returned `distance`
+    remains the semantic distance so the relevance gate keeps its calibrated
+    cutoff; the best semantic result is always retained in the final set.
     """
     top_k = top_k or config.TOP_K
     name = config.collection_name(corpus, variant)
@@ -199,9 +205,10 @@ def search(
             f"No index called '{name}'. Run `python app.py index` first."
         ) from exc
 
+    count = collection.count()
     raw = collection.query(
         query_embeddings=embed([question]),
-        n_results=min(top_k, collection.count()),
+        n_results=count,
     )
 
     results: list[Result] = []
@@ -217,7 +224,38 @@ def search(
                 produced_by=str(meta.get("produced_by", "unknown")),
             )
         )
-    return results
+
+    def tokens(text: str) -> list[str]:
+        return re.findall(r"[a-z0-9]+", text.lower())
+
+    keyword_index = BM25Okapi([tokens(result.text) for result in results])
+    keyword_scores = keyword_index.get_scores(tokens(question))
+    highest_keyword_score = max(keyword_scores, default=0.0)
+
+    # Semantic similarity remains the main signal. BM25 is a tie-breaker and
+    # exact-term boost, rather than a replacement for the calibrated distance.
+    ranked = sorted(
+        zip(results, keyword_scores),
+        key=lambda pair: (
+            -(
+                0.85 * (1.0 - pair[0].distance)
+                + 0.15 * (
+                    pair[1] / highest_keyword_score
+                    if highest_keyword_score > 0
+                    else 0.0
+                )
+            ),
+            pair[0].distance,
+        ),
+    )
+
+    selected = [result for result, _ in ranked[: min(top_k, len(ranked))]]
+    closest_semantic = min(results, key=lambda result: result.distance)
+    if selected and closest_semantic not in selected:
+        selected[-1] = closest_semantic
+
+    # Preserve the public nearest-first contract after hybrid selection.
+    return sorted(selected, key=lambda result: result.distance)
 
 
 def index_exists(corpus: str | None = None, variant: str = "default") -> bool:

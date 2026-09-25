@@ -387,32 +387,42 @@ target, not a revision of the original criterion.
 
 **What I changed:**
 
+I changed `store.py::search` from semantic-only retrieval to hybrid retrieval.
+It queries all indexed chunks, combines semantic similarity with a normalized
+BM25 keyword score (85% semantic, 15% keyword), selects the hybrid top five,
+and then returns them in the existing nearest-first order. The best semantic
+match is always retained, so the gate's calibrated distance cutoff is still
+comparable.
+
 **Why I picked it:**
 
-<!-- Connect it to a specific diagnosis above in one sentence. If you can't,
-     you picked a fix because it sounded impressive. -->
+The diagnosis found no actual miss, but the conservative retrieval target was
+the place most likely to hide a weakness: exact names, numbers, and phrases
+can be missed by meaning-only search. Hybrid search is one retrieval-stage
+change aimed directly at that risk, without changing chunking, generation, or
+the relevance cutoff.
 
 ### Run Log — After
 
-<!-- Same format, same five criteria, three runs each.
-     `python run_eval.py --label after` -->
+The raw question-level after log is
+[`results/run_2026-09-24_2304_after.md`](results/run_2026-09-24_2304_after.md),
+produced by `run_eval.py::main` after 15 uncached model calls.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Sampled chunks are complete thoughts | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 5. The named source contains the expected answer phrase | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
 **Did it help?**
 
-<!-- Say plainly whether it did, and how you know. If it made things worse,
-     say that — a change that backfired, honestly reported, earns full credit
-     and is more interesting than one that worked. What matters is that you can
-     tell.
-
-     Milestone 4. -->
+It did not improve the measured criteria: before and after were both 5/5 on
+all five criteria in all three runs, and the gate remained 5/5. It also did not
+make the results worse. The change preserved the already-perfect result, but
+the test cannot show a gain because the original system was already at the
+measurement ceiling.
 
 ## What's Still Broken
 
