@@ -359,11 +359,11 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunks contain the answer | MET | Each of the five questions had an answer-bearing chunk among the retrieved results in all three runs, giving 5/5 each time, which meets the target of at least 4/5. |
+| 2 | Every answer names a source | MET | All 15 generated answers named at least one source document, giving 5/5 in every run and meeting the 5/5 target. |
+| 3 | The relevance gate stops out-of-corpus questions | MET | The gate refused all five out-of-corpus questions in its deterministic pass, giving 5/5 in each run column and meeting the target of at least 4/5; the refusal text is `I don't have enough information about that.` from `gate.py::REFUSAL`. |
+| 4 | Sampled chunks are complete thoughts | MET | All five sampled chunks read as complete thoughts or paragraphs with no sentence cut at either edge, so the result is 5/5 and exceeds the 4/5 target. |
+| 5 | The named source contains the expected answer phrase | MET | For all five questions, the named source document contained the expected phrase from `questions.py`; this was 5/5 in each run and meets the target of at least 4/5. |
 
 ## Diagnoses
 
